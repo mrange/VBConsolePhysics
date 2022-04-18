@@ -6,6 +6,7 @@ Module Program
     Dim mySystem As MySystem = New MySystem()
 
     Dim constraintPen As Pen = New Pen(Brushes.Red, 3.0)
+    Dim font = New Font("Arial", 24.0)
 
     ' Draws MySystem
     Function DrawMySystem2(width As Integer, height As Integer, g As Graphics) As Boolean
@@ -16,6 +17,9 @@ Module Program
         g.Clear(Color.Black)
 
         mySystem.TimeStep()
+
+        g.DrawString("Powered by", font, Brushes.White, New PointF(0.0, 0.0))
+        g.DrawString("Spectre.Console", font, Brushes.Purple, New PointF(0.0, height / 2.0))
 
         For Each s In mySystem.Constraints
             Dim x0 As Integer = s.Left.Current.X + cx
