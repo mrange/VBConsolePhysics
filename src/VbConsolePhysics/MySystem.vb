@@ -3,11 +3,12 @@
     Public ReadOnly Constraints() As Constraint
 
     Public Sub New()
+        Dim z = 2.0
         Particles =
         {
-            New Particle(0, -40), 'Fix point
-            New Particle(10, 40, -40, 0, 0), ' Particle right of fix point
-            New Particle(20, 80, -40, 0, 0)  ' Particle right of particle above
+            New Particle(0, -40 * z), 'Fix point
+            New Particle(10, 40 * z, -40 * z, 0, 0), ' Particle right of fix point
+            New Particle(20, 80 * z, -40 * z, 0, 0)  ' Particle right of particle above
         }
 
         Constraints =

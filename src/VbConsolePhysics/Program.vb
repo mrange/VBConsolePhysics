@@ -1,59 +1,47 @@
-Imports Spectre.Console
+Imports System.Drawing
+' Imports Spectre.Console
 
 Module Program
     Dim timer As Stopwatch = Stopwatch.StartNew()
     Dim mySystem As MySystem = New MySystem()
 
-    ' Draws a circle traversing around in a circle
-    Function DrawACircle(c As Canvas) As Boolean
-        Dim now = timer.ElapsedMilliseconds / 1000.0
-        Dim cx = c.Width / 2
-        Dim cy = c.Height / 2
-
-        Dim a = now
-        Dim x = cx + Math.Cos(a) * 20
-        Dim y = cy + Math.Sin(a) * 20
-
-        c.Clear(Color.Black)
-        c.DrawCircle(x, y, 3, Color.Yellow)
-
-        Return True
-    End Function
+    Dim constraintPen As Pen = New Pen(Brushes.Red, 3.0)
 
     ' Draws MySystem
-    Function DrawMySystem(c As Canvas) As Boolean
+    Function DrawMySystem2(width As Integer, height As Integer, g As Graphics) As Boolean
         Dim now = timer.ElapsedMilliseconds / 1000.0
-        Dim cx = c.Width / 2
-        Dim cy = c.Height / 2
+        Dim cx = width / 2
+        Dim cy = height / 2
 
-        c.Clear(Color.Black)
+        g.Clear(Color.Black)
 
         mySystem.TimeStep()
 
         For Each s In mySystem.Constraints
-            Dim x0 = s.Left.Current.X + cx
-            Dim y0 = s.Left.Current.Y + cy
+            Dim x0 As Integer = s.Left.Current.X + cx
+            Dim y0 As Integer = s.Left.Current.Y + cy
 
-            Dim x1 = s.Right.Current.X + cx
-            Dim y1 = s.Right.Current.Y + cy
+            Dim x1 As Integer = s.Right.Current.X + cx
+            Dim y1 As Integer = s.Right.Current.Y + cy
 
-            c.DrawLine(x0, y0, x1, y1, Color.Red)
+            g.DrawLine(constraintPen, x0, y0, x1, y1)
         Next
 
         For Each p In mySystem.Particles
-            Dim x = p.Current.X + cx
-            Dim y = p.Current.Y + cy
+            Dim radius As Integer = 10
+            Dim x As Integer = p.Current.X + cx - radius
+            Dim y As Integer = p.Current.Y + cy - radius
 
-            c.DrawCircle(x, y, 5, Color.Yellow)
+            g.FillEllipse(Brushes.Yellow, x, y, 2 * radius, 2 * radius)
         Next
 
         Return True
     End Function
 
     Sub Main(args As String())
-        Dim w = AnsiConsole.Profile.Width
-        Dim h = AnsiConsole.Profile.Height
+        Dim w = Spectre.Console.AnsiConsole.Profile.Width
+        Dim h = Spectre.Console.AnsiConsole.Profile.Height
 
-        PaintSomePixels(50, w, h * 2, Function(c) DrawMySystem(c))
+        PaintSomePixels(25, w, h * 2, Function(g, bw, bh) DrawMySystem2(g, bw, bh))
     End Sub
 End Module
