@@ -29,6 +29,17 @@ Module Program
         c.Clear(Color.Black)
 
         mySystem.TimeStep()
+
+        For Each s In mySystem.Constraints
+            Dim x0 = s.Left.Current.X + cx
+            Dim y0 = s.Left.Current.Y + cy
+
+            Dim x1 = s.Right.Current.X + cx
+            Dim y1 = s.Right.Current.Y + cy
+
+            c.DrawLine(x0, y0, x1, y1, Color.Red)
+        Next
+
         For Each p In mySystem.Particles
             Dim x = p.Current.X + cx
             Dim y = p.Current.Y + cy
